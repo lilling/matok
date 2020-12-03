@@ -1,9 +1,15 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+
     </div>
+    <v-navigation-drawer>
+      <v-list nav>
+        <v-list-item to="/">Home</v-list-item>
+        <v-list-item to="/about">About</v-list-item>
+      </v-list>
+
+    </v-navigation-drawer>
     <router-view />
   </div>
 </template>
