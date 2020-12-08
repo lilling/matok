@@ -2,5 +2,11 @@
   "brandTitle": "Metukiz",
   "calendar": "Calendar",
   "recipesAndIngredients": "Recipes And Ingredients",
-  "ingredientsList": "Ingredients List"
+  "ingredientsList": "Ingredients List",
+  "Name": "Name",
+  "Price": "Price",
+  "Search": "Search",
+  "AddIngredient": "Add Ingredient",
+  "Add": "Add",
+  "WeightInPurchase": "Weight In Purchase (gr)"
 }

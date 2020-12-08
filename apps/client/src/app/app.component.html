@@ -1,4 +1,4 @@
-<div class="container" [class.is-mobile]="mobileQuery.matches" [dir]="translateService.currentLang === 'he' ? 'rtl' : 'ltr'" >
+<div class="container" [class.is-mobile]="mobileQuery.matches" [dir]="translateService.currentLang === 'he' ? 'rtl' : 'ltr'">
   <mat-toolbar color="primary" class="main-toolbar">
     <button mat-icon-button (click)="drawer.toggle()">
       <mat-icon>menu</mat-icon>
@@ -13,23 +13,22 @@
   <mat-sidenav-container class="main-side-nav-container">
     <mat-sidenav #drawer mode="over" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
-        <mat-list-item>
+        <mat-list-item routerLink="calendar">
           <button mat-icon-button>
             <mat-icon>today</mat-icon>
           </button>
-          <a matLine translate routerLink="calendar">calendar</a>
+          <a matLine translate>calendar</a>
         </mat-list-item>
-        <mat-list-item>
+        <mat-list-item routerLink="recipes-ingredients">
           <button mat-icon-button>
             <mat-icon>folder_open</mat-icon>
           </button>
-          <a matLine translate routerLink="recipes-ingredients">recipesAndIngredients</a>
+          <a matLine translate>recipesAndIngredients</a>
         </mat-list-item>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
       <router-outlet></router-outlet>
-      <div>hell</div>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

@@ -2,5 +2,11 @@
   "brandTitle": "מתוקיז",
   "calendar": "תאריכון",
   "recipesAndIngredients": "מתכונים ומצרכים",
-  "ingredientsList": "רשימת מצרכים"
+  "ingredientsList": "רשימת מצרכים",
+  "Name": "שם",
+  "Price": "מחיר",
+  "Search": "חפש",
+  "AddIngredient": "הוסף רכיב",
+  "Add": "הוסף",
+  "WeightInPurchase": "משקל בקניה (גר)"
 }
