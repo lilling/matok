@@ -30,9 +30,6 @@
       "tags": [],
       "implicitDependencies": ["client"]
     },
-    "api": {
-      "tags": []
-    },
     "data": {
       "tags": []
     }
