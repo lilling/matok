@@ -32,6 +32,6 @@ export class AddIngredientDialogComponent implements OnInit {
   }
 
   isDisabled() {
-    return !!Object.values(this.checkoutForm.controls).some((c) => c.errors);
+    return !!Object.values(this.checkoutForm.controls).some(c => c.errors);
   }
 }

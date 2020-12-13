@@ -20,7 +20,7 @@ export class IngredientListComponent {
   filter$ = this.filterCtrl.valueChanges.pipe(
     debounceTime(500),
     startWith(''),
-    map((a) => '' + a)
+    map(a => '' + a)
   );
   refreshIngredientsAsObservable = this.refreshIngredients.asObservable();
   dataSource$ = combineLatest([this.refreshIngredientsAsObservable, this.filter$]).pipe(
@@ -39,7 +39,7 @@ export class IngredientListComponent {
     ref
       .afterClosed()
       .pipe(take(1))
-      .subscribe((res) => {
+      .subscribe(res => {
         const observer = item
           ? this.ingredientService.updateIngredient(item.id, res)
           : this.ingredientService.addIngredient(res);
