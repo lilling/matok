@@ -1,12 +1,12 @@
 <mat-form-field>
-  <input matInput type="text" [placeholder]="'Search' | translate"/>
+  <input matInput type="text" [placeholder]="'Search' | translate" [formControl]="filterCtrl"/>
   <button mat-icon-button matSuffix>
     <mat-icon>search</mat-icon>
   </button>
 </mat-form-field>
 
-<button color="primary" mat-flat-button (click)="openAddDialog()">{{'AddIngredient' | translate}}</button>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<button color="primary" mat-flat-button (click)="OpenIngredientDialog()">{{'AddIngredient' | translate}}</button>
+<table mat-table [dataSource]="dataSource$ | async" class="mat-elevation-z8">
 
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
@@ -27,6 +27,18 @@
   <ng-container matColumnDef="price">
     <th mat-header-cell *matHeaderCellDef translate>Price</th>
     <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let row" >
+      <button mat-icon-button (click)="OpenIngredientDialog(row)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="delete(row)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

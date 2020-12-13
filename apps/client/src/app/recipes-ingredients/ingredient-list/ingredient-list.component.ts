@@ -1,39 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { take } from 'rxjs/operators';
+import { debounceTime, map, startWith, switchMap, take } from 'rxjs/operators';
 import { AddIngredientDialogComponent } from './add-ingredient-dialog/add-ingredient-dialog.component';
-import { Ingredient } from '@matok/data';
+import { Ingredient } from '@prisma/client';
+import { IngredientService } from '../../shared/ingredient.service';
+import { BehaviorSubject, combineLatest, iif, of } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'matok-ingredient-list',
   templateUrl: './ingredient-list.component.html',
   styleUrls: ['./ingredient-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class IngredientListComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'weight', 'price'];
-  dataSource = [
-    { id: 1234, name: 'Hydrogen', weight: 1.0079, price: 'H' },
-    { id: 126734, name: 'Helium', weight: 4.0026, price: 'He' },
-    { id: 1232134, name: 'Lithium', weight: 6.941, price: 'Li' },
-    { id: 126634, name: 'Neon', weight: 20.1797, price: 'Ne' },
-  ];
+export class IngredientListComponent {
+  displayedColumns: string[] = ['name', 'weight', 'price', 'actions'];
+  refreshIngredients = new BehaviorSubject<boolean>(true);
+  filterCtrl = new FormControl();
+  filter$ = this.filterCtrl.valueChanges.pipe(
+    debounceTime(500),
+    startWith(''),
+    map((a) => '' + a)
+  );
+  refreshIngredientsAsObservable = this.refreshIngredients.asObservable();
+  dataSource$ = combineLatest([this.refreshIngredientsAsObservable, this.filter$]).pipe(
+    switchMap(([refreshNeeded, filter]) =>
+      iif(() => refreshNeeded, this.ingredientService.getIngredients(filter), of([]))
+    )
+  );
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private ingredientService: IngredientService) {}
 
-  ngOnInit(): void {}
-
-  openAddDialog() {
-    const ref = this.dialog.open<any, any, Ingredient>(
-      AddIngredientDialogComponent
-    );
+  OpenIngredientDialog(item?: Ingredient) {
+    const ref = this.dialog.open<AddIngredientDialogComponent, Ingredient, Ingredient>(AddIngredientDialogComponent, {
+      data: item,
+    });
 
     ref
       .afterClosed()
       .pipe(take(1))
       .subscribe((res) => {
-        console.log(res);
+        const observer = item
+          ? this.ingredientService.updateIngredient(item.id, res)
+          : this.ingredientService.addIngredient(res);
+
+        observer.pipe(take(1)).subscribe(() => this.refreshIngredients.next(true));
       });
   }
 
-  addItem() {}
+  delete(item: Ingredient) {
+    this.ingredientService
+      .deleteIngredient(item)
+      .pipe(take(1))
+      .subscribe(() => this.refreshIngredients.next(true));
+  }
 }
