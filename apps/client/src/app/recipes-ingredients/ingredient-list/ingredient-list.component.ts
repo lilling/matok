@@ -31,7 +31,7 @@ export class IngredientListComponent {
 
   constructor(public dialog: MatDialog, private ingredientService: IngredientService) {}
 
-  OpenIngredientDialog(item?: Ingredient) {
+  openIngredientDialog(item?: Ingredient) {
     const ref = this.dialog.open<AddIngredientDialogComponent, Ingredient, Ingredient>(AddIngredientDialogComponent, {
       data: item,
     });
@@ -48,9 +48,9 @@ export class IngredientListComponent {
       });
   }
 
-  delete(item: Ingredient) {
+  delete(id: string) {
     this.ingredientService
-      .deleteIngredient(item)
+      .deleteIngredient(id)
       .pipe(take(1))
       .subscribe(() => this.refreshIngredients.next(true));
   }

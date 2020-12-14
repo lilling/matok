@@ -15,8 +15,8 @@ export class IngredientService {
     return this.http.post(`${this.urlPart}/add`, { ...item, id: uuid.v4() });
   }
 
-  deleteIngredient(item: Ingredient) {
-    return this.http.delete(`${this.urlPart}/${item.id}`);
+  deleteIngredient(id: string) {
+    return this.http.delete(`${this.urlPart}/${id}`);
   }
 
   updateIngredient(id: string, item: Ingredient) {
