@@ -8,14 +8,41 @@ datasource db {
 }
 
 model Ingredient {
-  id     String @id
-  name   String
-  price  Float
-  weight Float?
+  id               String             @id
+  name             String
+  price            Float
+  weight           Float?
+  IngredientAmount IngredientAmount[]
 }
 
 model Supply {
-  id    String @id
-  name  String
-  price Float
+  id           String         @id
+  name         String
+  price        Float
+  SupplyAmount SupplyAmount[]
+}
+
+model IngredientAmount {
+  id           String     @id
+  amount       Float
+  ingredientId String
+  recipeId     String
+  Ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  Recipe       Recipe     @relation(fields: [recipeId], references: [id])
+}
+
+model Recipe {
+  id               String             @id
+  name             String
+  IngredientAmount IngredientAmount[]
+  SupplyAmount     SupplyAmount[]
+}
+
+model SupplyAmount {
+  id       String @id
+  supplyId String
+  amount   Float
+  recipeId String
+  Recipe   Recipe @relation(fields: [recipeId], references: [id])
+  Supply   Supply @relation(fields: [supplyId], references: [id])
 }

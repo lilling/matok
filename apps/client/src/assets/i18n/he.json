@@ -9,5 +9,7 @@
   "Add": "הוסף",
   "Complete": "סיים",
   "weightInPurchase": "משקל בקניה (גר)",
-  "suppliesList": "רשימת דברים נוספים"
+  "suppliesList": "רשימת דברים נלווים",
+  "ingredientsExample": "הוסף מצרכים כדי ליצור מתכונים",
+  "suppliesExample": "קופסאות, תחתיות וכו'. הוסף אותם למתכונים"
 }
