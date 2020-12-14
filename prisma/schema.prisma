@@ -13,3 +13,9 @@ model Ingredient {
   price  Float
   weight Float?
 }
+
+model Supply {
+  id    String @id
+  name  String
+  price Float
+}

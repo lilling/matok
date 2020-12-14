@@ -24,33 +24,28 @@ export class IngredientListComponent {
   );
   refreshIngredientsAsObservable = this.refreshIngredients.asObservable();
   dataSource$ = combineLatest([this.refreshIngredientsAsObservable, this.filter$]).pipe(
-    switchMap(([refreshNeeded, filter]) =>
-      iif(() => refreshNeeded, this.ingredientService.getIngredients(filter), of([]))
-    )
+    switchMap(([refreshNeeded, filter]) => iif(() => refreshNeeded, this.ingredientService.get(filter), of([])))
   );
 
-  constructor(public dialog: MatDialog, private ingredientService: IngredientService) {}
+  constructor(private dialog: MatDialog, private ingredientService: IngredientService) {}
 
-  openIngredientDialog(item?: Ingredient) {
+  openDialog(data?: Ingredient) {
     const ref = this.dialog.open<AddIngredientDialogComponent, Ingredient, Ingredient>(AddIngredientDialogComponent, {
-      data: item,
+      data,
     });
 
     ref
       .afterClosed()
       .pipe(take(1))
       .subscribe(res => {
-        const observer = item
-          ? this.ingredientService.updateIngredient(item.id, res)
-          : this.ingredientService.addIngredient(res);
-
+        const observer = data ? this.ingredientService.update(data.id, res) : this.ingredientService.add(res);
         observer.pipe(take(1)).subscribe(() => this.refreshIngredients.next(true));
       });
   }
 
   delete(id: string) {
     this.ingredientService
-      .deleteIngredient(id)
+      .delete(id)
       .pipe(take(1))
       .subscribe(() => this.refreshIngredients.next(true));
   }

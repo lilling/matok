@@ -10,12 +10,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AddIngredientDialogComponent } from './ingredient-list/add-ingredient-dialog/add-ingredient-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SuppliesListComponent } from './supplies-list/supplies-list.component';
+import { AddSupplyDialogComponent } from './supplies-list/add-supply-dialog/add-supply-dialog.component';
 
 @NgModule({
   declarations: [
     RecipesIngredientsComponent,
     IngredientListComponent,
     AddIngredientDialogComponent,
+    SuppliesListComponent,
+    AddSupplyDialogComponent,
   ],
   imports: [
     CommonModule,

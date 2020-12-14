@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { IngredientService } from './ingredient.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('IngredientService', () => {
+describe('BaseService', () => {
   let service: IngredientService;
 
   beforeEach(() => {
@@ -18,11 +18,11 @@ describe('IngredientService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should call getIngredients', () => {
+  it('should call get', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const spy = spyOn(service.http, 'post').and.callThrough();
-    service.getIngredients('sda');
+    service.get('sda');
     expect(spy).toBeCalled();
   });
 
@@ -30,7 +30,7 @@ describe('IngredientService', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const spy = spyOn(service.http, 'post').and.callThrough();
-    service.addIngredient({ price: 3, weight: 34, name: 'sda' } as any);
+    service.add({ price: 3, weight: 34, name: 'sda' } as any);
     expect(spy).toBeCalled();
   });
 
@@ -38,7 +38,7 @@ describe('IngredientService', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const spy = spyOn(service.http, 'put').and.callThrough();
-    service.updateIngredient('das', { price: 3, weight: 34, name: 'sda' } as any);
+    service.update('das', { price: 3, weight: 34, name: 'sda' } as any);
     expect(spy).toBeCalled();
   });
 
@@ -46,7 +46,7 @@ describe('IngredientService', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const spy = spyOn(service.http, 'delete').and.callThrough();
-    service.deleteIngredient('sda');
+    service.delete('sda');
     expect(spy).toBeCalled();
   });
 });

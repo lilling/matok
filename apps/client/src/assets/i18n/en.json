@@ -6,8 +6,8 @@
   "Name": "Name",
   "Price": "Price",
   "Search": "Search",
-  "AddIngredient": "Add Ingredient",
+  "Add": "Add",
   "Complete": "Complete",
-  "WeightInPurchase": "Weight In Purchase (gr)",
-  "IngredientList": "Ingredient List"
+  "weightInPurchase": "Weight In Purchase (gr)",
+  "suppliesList": "Supplies List"
 }

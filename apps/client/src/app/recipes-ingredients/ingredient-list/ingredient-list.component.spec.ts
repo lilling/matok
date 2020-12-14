@@ -45,25 +45,25 @@ describe('IngredientListComponent', () => {
 
   describe('OpenIngredientDialog', () => {
     it('should add ingredient when item is not passed', () => {
-      const spy = spyOn(TestBed.inject(IngredientService), 'addIngredient');
+      const spy = spyOn(TestBed.inject(IngredientService), 'add');
       spyOn(TestBed.inject(MatDialog), 'open').and.returnValue({
         afterClosed: () => of({ data: null }),
       });
-      component.openIngredientDialog();
+      component.openDialog();
       expect(spy).toBeCalledTimes(1);
     });
     it('should edit ingredient when item is passed', () => {
-      const spy = spyOn(TestBed.inject(IngredientService), 'updateIngredient');
+      const spy = spyOn(TestBed.inject(IngredientService), 'update');
       spyOn(TestBed.inject(MatDialog), 'open').and.returnValue({
         afterClosed: () => of({ data: null }),
       });
-      component.openIngredientDialog({} as any);
+      component.openDialog({} as any);
       expect(spy).toBeCalledTimes(1);
     });
   });
 
   it('should refresh when deleting item', fakeAsync(() => {
-    spyOn(TestBed.inject(IngredientService), 'deleteIngredient').and.callThrough();
+    spyOn(TestBed.inject(IngredientService), 'delete').and.callThrough();
     component.delete({} as any);
     tick();
     expect(refreshSpy).toBeCalledTimes(1);

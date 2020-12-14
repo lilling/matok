@@ -6,8 +6,8 @@
   "Name": "שם",
   "Price": "מחיר",
   "Search": "חפש",
-  "AddIngredient": "הוסף רכיב",
+  "Add": "הוסף",
   "Complete": "סיים",
-  "WeightInPurchase": "משקל בקניה (גר)",
-  "IngredientList": "רשימת מרכיבים"
+  "weightInPurchase": "משקל בקניה (גר)",
+  "suppliesList": "רשימת דברים נוספים"
 }

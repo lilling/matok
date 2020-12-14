@@ -11,12 +11,5 @@
     </mat-form-field>
   </div>
 
-  <div>
-    <mat-form-field>
-      <input matInput required [placeholder]="'weightInPurchase' | translate" id="weight" type="number" formControlName="weight">
-    </mat-form-field>
-
-  </div>
-
   <button class="button" [disabled]="isDisabled()" mat-flat-button color="primary" type="submit">{{ 'Complete' | translate }}</button>
 </form>
