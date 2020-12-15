@@ -5,10 +5,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { IngredientService } from './ingredient.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SupplyService } from './supply.service';
+import { RecipeService } from './recipe.service';
 
 @NgModule({
   declarations: [],
-  providers: [IngredientService, SupplyService],
+  providers: [IngredientService, SupplyService, RecipeService],
   imports: [TranslateModule, CommonModule, MatDialogModule, HttpClientModule],
   exports: [TranslateModule, MatDialogModule, HttpClientModule],
 })

@@ -9,5 +9,9 @@
   "Add": "Add",
   "Complete": "Complete",
   "weightInPurchase": "Weight In Purchase (gr)",
-  "suppliesList": "Supplies List"
+  "suppliesList": "Supplies List",
+  "ingredientsExample": "Add Ingredients to create recipes",
+  "suppliesExample": "Add Supplies to create recipes",
+  "recipes": "Recipes",
+  "recipesExample": "Create recipes and use them in an order"
 }

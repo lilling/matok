@@ -36,7 +36,7 @@ describe('IngredientListComponent', () => {
     fixture = TestBed.createComponent(IngredientListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    refreshSpy = spyOn(component.refreshIngredients, 'next');
+    refreshSpy = spyOn(component.refresh, 'next');
   });
 
   it('should create', () => {

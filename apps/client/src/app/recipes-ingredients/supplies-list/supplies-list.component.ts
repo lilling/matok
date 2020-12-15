@@ -14,15 +14,15 @@ import { AddSupplyDialogComponent } from './add-supply-dialog/add-supply-dialog.
 })
 export class SuppliesListComponent {
   displayedColumns: string[] = ['name', 'price', 'actions'];
-  refreshIngredients = new BehaviorSubject<boolean>(true);
+  refresh = new BehaviorSubject<boolean>(true);
   filterCtrl = new FormControl();
   filter$ = this.filterCtrl.valueChanges.pipe(
     debounceTime(500),
     startWith(''),
     map(a => '' + a)
   );
-  refreshIngredientsAsObservable = this.refreshIngredients.asObservable();
-  dataSource$ = combineLatest([this.refreshIngredientsAsObservable, this.filter$]).pipe(
+  refreshAsObservable = this.refresh.asObservable();
+  dataSource$ = combineLatest([this.refreshAsObservable, this.filter$]).pipe(
     switchMap(([refreshNeeded, filter]) => iif(() => refreshNeeded, this.supplyService.get(filter), of([])))
   );
   constructor(private dialog: MatDialog, private supplyService: SupplyService) {}
@@ -35,7 +35,7 @@ export class SuppliesListComponent {
       .pipe(take(1))
       .subscribe(res => {
         const observer = data ? this.supplyService.update(data.id, res) : this.supplyService.add(res);
-        observer.pipe(take(1)).subscribe(() => this.refreshIngredients.next(true));
+        observer.pipe(take(1)).subscribe(() => this.refresh.next(true));
       });
   }
 
@@ -43,6 +43,6 @@ export class SuppliesListComponent {
     this.supplyService
       .delete(id)
       .pipe(take(1))
-      .subscribe(() => this.refreshIngredients.next(true));
+      .subscribe(() => this.refresh.next(true));
   }
 }

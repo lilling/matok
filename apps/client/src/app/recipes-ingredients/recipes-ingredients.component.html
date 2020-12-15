@@ -1,16 +1,9 @@
 <div class="container">
-  <div class="card" routerLink="./ingredients">
-    <img src="assets/ingredients.svg">
+  <div class="card" *ngFor="let card of cards" [routerLink]="card.route">
+    <img [src]="card.img">
     <h1>
-      {{'ingredientsList' | translate}}
+      {{card.name | translate}}
     </h1>
-    <h3>{{ 'ingredientsExample' | translate }}</h3>
-  </div>
-  <div class="card" routerLink="./supplies">
-    <img src="assets/cake-box.svg">
-    <h1>
-      {{'suppliesList' | translate}}
-    </h1>
-    <h3>{{ 'suppliesExample' | translate }}</h3>
+    <h3>{{ card.description | translate }}</h3>
   </div>
 </div>

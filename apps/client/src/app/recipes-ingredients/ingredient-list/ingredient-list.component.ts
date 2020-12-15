@@ -15,15 +15,15 @@ import { FormControl } from '@angular/forms';
 })
 export class IngredientListComponent {
   displayedColumns: string[] = ['name', 'weight', 'price', 'actions'];
-  refreshIngredients = new BehaviorSubject<boolean>(true);
+  refresh = new BehaviorSubject<boolean>(true);
   filterCtrl = new FormControl();
   filter$ = this.filterCtrl.valueChanges.pipe(
     debounceTime(500),
     startWith(''),
     map(a => '' + a)
   );
-  refreshIngredientsAsObservable = this.refreshIngredients.asObservable();
-  dataSource$ = combineLatest([this.refreshIngredientsAsObservable, this.filter$]).pipe(
+  refreshAsObservable = this.refresh.asObservable();
+  dataSource$ = combineLatest([this.refreshAsObservable, this.filter$]).pipe(
     switchMap(([refreshNeeded, filter]) => iif(() => refreshNeeded, this.ingredientService.get(filter), of([])))
   );
 
@@ -39,7 +39,7 @@ export class IngredientListComponent {
       .pipe(take(1))
       .subscribe(res => {
         const observer = data ? this.ingredientService.update(data.id, res) : this.ingredientService.add(res);
-        observer.pipe(take(1)).subscribe(() => this.refreshIngredients.next(true));
+        observer.pipe(take(1)).subscribe(() => this.refresh.next(true));
       });
   }
 
@@ -47,6 +47,6 @@ export class IngredientListComponent {
     this.ingredientService
       .delete(id)
       .pipe(take(1))
-      .subscribe(() => this.refreshIngredients.next(true));
+      .subscribe(() => this.refresh.next(true));
   }
 }
