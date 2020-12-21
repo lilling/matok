@@ -14,13 +14,13 @@ import {
 export class SupplyService {
   constructor(private prisma: PrismaService) {}
 
-  supply(userWhereUniqueInput: SupplyWhereUniqueInput): Promise<Supply | null> {
+  get(userWhereUniqueInput: SupplyWhereUniqueInput): Promise<Supply | null> {
     return this.prisma.supply.findOne({
       where: userWhereUniqueInput,
     });
   }
 
-  supplies(params: {
+  getMany(params: {
     skip?: number;
     take?: number;
     cursor?: SupplyWhereUniqueInput;
@@ -37,23 +37,23 @@ export class SupplyService {
     });
   }
 
-  createSupply(data: SupplyCreateInput): Promise<Supply> {
+  create(data: SupplyCreateInput): Promise<Supply> {
     return this.prisma.supply.create({ data });
   }
 
-  updateSupply(where: SupplyWhereUniqueInput, data: SupplyUpdateInput): Promise<Supply> {
+  update(where: SupplyWhereUniqueInput, data: SupplyUpdateInput): Promise<Supply> {
     return this.prisma.supply.update({ data, where });
   }
 
-  updateSupplies(where: SupplyWhereUniqueInput, data: SupplyUpdateManyMutationInput) {
+  updateMany(where: SupplyWhereUniqueInput, data: SupplyUpdateManyMutationInput) {
     return this.prisma.supply.updateMany({ data, where });
   }
 
-  deleteSupply(where: SupplyWhereUniqueInput): Promise<Supply> {
+  delete(where: SupplyWhereUniqueInput): Promise<Supply> {
     return this.prisma.supply.delete({ where });
   }
 
-  deleteSupplies(where: SupplyWhereInput) {
+  deleteMany(where: SupplyWhereInput) {
     return this.prisma.supply.deleteMany({ where });
   }
 }

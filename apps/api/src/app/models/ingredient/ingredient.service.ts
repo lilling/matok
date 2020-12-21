@@ -14,13 +14,13 @@ import {
 export class IngredientService {
   constructor(private prisma: PrismaService) {}
 
-  ingredient(userWhereUniqueInput: IngredientWhereUniqueInput): Promise<Ingredient | null> {
+  get(userWhereUniqueInput: IngredientWhereUniqueInput): Promise<Ingredient | null> {
     return this.prisma.ingredient.findOne({
       where: userWhereUniqueInput,
     });
   }
 
-  ingredients(params: {
+  getMany(params: {
     skip?: number;
     take?: number;
     cursor?: IngredientWhereUniqueInput;
@@ -37,23 +37,23 @@ export class IngredientService {
     });
   }
 
-  createIngredient(data: IngredientCreateInput): Promise<Ingredient> {
+  create(data: IngredientCreateInput): Promise<Ingredient> {
     return this.prisma.ingredient.create({ data });
   }
 
-  updateIngredient(where: IngredientWhereUniqueInput, data: IngredientUpdateInput): Promise<Ingredient> {
+  update(where: IngredientWhereUniqueInput, data: IngredientUpdateInput): Promise<Ingredient> {
     return this.prisma.ingredient.update({ data, where });
   }
 
-  updateIngredients(where: IngredientWhereUniqueInput, data: IngredientUpdateManyMutationInput) {
+  updateMany(where: IngredientWhereUniqueInput, data: IngredientUpdateManyMutationInput) {
     return this.prisma.ingredient.updateMany({ data, where });
   }
 
-  deleteIngredient(where: IngredientWhereUniqueInput): Promise<Ingredient> {
+  delete(where: IngredientWhereUniqueInput): Promise<Ingredient> {
     return this.prisma.ingredient.delete({ where });
   }
 
-  deleteIngredients(where: IngredientWhereInput) {
+  deleteMany(where: IngredientWhereInput) {
     return this.prisma.ingredient.deleteMany({ where });
   }
 }

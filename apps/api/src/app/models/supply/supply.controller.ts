@@ -15,7 +15,7 @@ export class SupplyController {
   constructor(private readonly supplyService: SupplyService) {}
 
   @Post()
-  getAllSupplies(
+  getMany(
     @Body()
     params: {
       skip?: number;
@@ -25,42 +25,42 @@ export class SupplyController {
       orderBy?: SupplyOrderByInput;
     }
   ) {
-    return this.supplyService.supplies(params);
+    return this.supplyService.getMany(params);
   }
 
   @Get(':id')
-  getIngredient(@Param('id') id: string) {
-    return this.supplyService.supply({ id });
+  get(@Param('id') id: string) {
+    return this.supplyService.get({ id });
   }
 
   @Post('add')
-  addIngredient(@Body() data: SupplyCreateInput): Promise<Supply> {
-    return this.supplyService.createSupply(data);
+  add(@Body() data: SupplyCreateInput): Promise<Supply> {
+    return this.supplyService.create(data);
   }
 
   @Delete(':id')
-  deleteIngredient(@Param('id') id: string) {
-    return this.supplyService.deleteSupply({ id });
+  delete(@Param('id') id: string) {
+    return this.supplyService.delete({ id });
   }
 
   @Delete()
-  deleteIngredients(@Body() ids: string[]) {
-    return this.supplyService.deleteSupplies({ id: { in: ids } });
+  deleteMany(@Body() ids: string[]) {
+    return this.supplyService.deleteMany({ id: { in: ids } });
   }
 
   @Put(':id')
-  updateIngredient(@Param('id') id: string, @Body() data: SupplyUpdateInput) {
-    return this.supplyService.updateSupply({ id }, data);
+  update(@Param('id') id: string, @Body() data: SupplyUpdateInput) {
+    return this.supplyService.update({ id }, data);
   }
 
   @Put()
-  updateIngredients(
+  updateMany(
     @Body()
     params: {
       where: SupplyWhereUniqueInput;
       data: SupplyUpdateManyMutationInput;
     }
   ) {
-    return this.supplyService.updateSupplies(params.where, params.data);
+    return this.supplyService.updateMany(params.where, params.data);
   }
 }

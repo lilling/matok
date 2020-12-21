@@ -15,7 +15,7 @@ export class IngredientController {
   constructor(private readonly ingredientService: IngredientService) {}
 
   @Post()
-  getAllIngredients(
+  getMany(
     @Body()
     params: {
       skip?: number;
@@ -25,42 +25,42 @@ export class IngredientController {
       orderBy?: IngredientOrderByInput;
     }
   ) {
-    return this.ingredientService.ingredients(params);
+    return this.ingredientService.getMany(params);
   }
 
   @Get(':id')
   getIngredient(@Param('id') id: string) {
-    return this.ingredientService.ingredient({ id });
+    return this.ingredientService.get({ id });
   }
 
   @Post('add')
   addIngredient(@Body() ingredientData: IngredientCreateInput): Promise<IngredientModel> {
-    return this.ingredientService.createIngredient(ingredientData);
+    return this.ingredientService.create(ingredientData);
   }
 
   @Delete(':id')
   deleteIngredient(@Param('id') id: string) {
-    return this.ingredientService.deleteIngredient({ id });
+    return this.ingredientService.delete({ id });
   }
 
   @Delete()
-  deleteIngredients(@Body() ids: string[]) {
-    return this.ingredientService.deleteIngredients({ id: { in: ids } });
+  deleteMany(@Body() ids: string[]) {
+    return this.ingredientService.deleteMany({ id: { in: ids } });
   }
 
   @Put(':id')
   updateIngredient(@Param('id') id: string, @Body() data: IngredientUpdateInput) {
-    return this.ingredientService.updateIngredient({ id }, data);
+    return this.ingredientService.update({ id }, data);
   }
 
   @Put()
-  updateIngredients(
+  updateMany(
     @Body()
     params: {
       where: IngredientWhereUniqueInput;
       data: IngredientUpdateManyMutationInput;
     }
   ) {
-    return this.ingredientService.updateIngredients(params.where, params.data);
+    return this.ingredientService.updateMany(params.where, params.data);
   }
 }
