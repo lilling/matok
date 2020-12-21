@@ -12,6 +12,9 @@ import { AddIngredientDialogComponent } from './ingredient-list/add-ingredient-d
 import { ReactiveFormsModule } from '@angular/forms';
 import { SuppliesListComponent } from './supplies-list/supplies-list.component';
 import { AddSupplyDialogComponent } from './supplies-list/add-supply-dialog/add-supply-dialog.component';
+import { RecipesListComponent } from './recipes-list/recipes-list.component';
+import { AddRecipeDialogComponent } from './recipes-list/add-recipe-dialog/add-recipe-dialog.component';
+import { UiModule } from '@matok/ui';
 
 @NgModule({
   declarations: [
@@ -20,6 +23,8 @@ import { AddSupplyDialogComponent } from './supplies-list/add-supply-dialog/add-
     AddIngredientDialogComponent,
     SuppliesListComponent,
     AddSupplyDialogComponent,
+    RecipesListComponent,
+    AddRecipeDialogComponent,
   ],
   imports: [
     CommonModule,

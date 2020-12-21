@@ -1,0 +1,9 @@
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" [dir]="translateService.currentLang === 'he' ? 'rtl' : 'ltr'">
+  <div>
+    <mat-form-field>
+      <input matInput required [placeholder]="'Name' | translate" id="name" type="text" formControlName="name">
+    </mat-form-field>
+  </div>
+
+  <button class="button" [disabled]="isDisabled()" mat-flat-button color="primary" type="submit">{{ 'Complete' | translate }}</button>
+</form>

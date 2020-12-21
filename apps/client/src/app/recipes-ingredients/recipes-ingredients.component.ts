@@ -20,7 +20,7 @@ export class RecipesIngredientsComponent {
       description: 'suppliesExample',
     },
     {
-      route: './supplies',
+      route: './recipes',
       name: 'recipes',
       img: 'assets/recipe-book.svg',
       description: 'recipesExample',
