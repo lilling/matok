@@ -11,11 +11,12 @@ import { Ingredient } from '@prisma/client';
 })
 export class AddIngredientDialogComponent implements OnInit {
   checkoutForm: FormGroup;
+  addOther: boolean;
 
   constructor(
     public translateService: TranslateService,
     private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<any, Ingredient>,
+    private dialogRef: MatDialogRef<any, { value: Ingredient; addOther: boolean }>,
     @Inject(MAT_DIALOG_DATA) public data?: Ingredient
   ) {}
 
@@ -28,7 +29,7 @@ export class AddIngredientDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dialogRef.close(this.checkoutForm.value);
+    this.dialogRef.close({ value: this.checkoutForm.value, addOther: this.addOther });
   }
 
   isDisabled() {

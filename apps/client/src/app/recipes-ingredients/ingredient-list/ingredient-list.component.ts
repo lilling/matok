@@ -30,15 +30,21 @@ export class IngredientListComponent {
   constructor(private dialog: MatDialog, private ingredientService: IngredientService) {}
 
   openDialog(data?: Ingredient) {
-    const ref = this.dialog.open<AddIngredientDialogComponent, Ingredient, Ingredient>(AddIngredientDialogComponent, {
-      data,
-    });
+    const ref = this.dialog.open<AddIngredientDialogComponent, Ingredient, { value: Ingredient; addOther: boolean }>(
+      AddIngredientDialogComponent,
+      { data }
+    );
 
     ref
       .afterClosed()
       .pipe(take(1))
       .subscribe(res => {
-        const observer = data ? this.ingredientService.update(data.id, res) : this.ingredientService.add(res);
+        if (res.addOther) {
+          this.openDialog();
+        }
+        const observer = data
+          ? this.ingredientService.update(data.id, res.value)
+          : this.ingredientService.add(res.value);
         observer.pipe(take(1)).subscribe(() => this.refresh.next(true));
       });
   }
