@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@matok/data": ["libs/data/src/index.ts"]
+      "@matok/data": ["libs/data/src/index.ts"],
+      "@matok/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
