@@ -3,7 +3,7 @@ import { BehaviorSubject, combineLatest, iif, of } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { debounceTime, map, startWith, switchMap, take } from 'rxjs/operators';
 import { SupplyService } from '../../shared/supply.service';
-import { Supply } from '@prisma/client';
+import { Ingredient, Supply } from '@prisma/client';
 import { MatDialog } from '@angular/material/dialog';
 import { AddSupplyDialogComponent } from './add-supply-dialog/add-supply-dialog.component';
 
@@ -25,16 +25,23 @@ export class SuppliesListComponent {
   dataSource$ = combineLatest([this.refreshAsObservable, this.filter$]).pipe(
     switchMap(([refreshNeeded, filter]) => iif(() => refreshNeeded, this.supplyService.get(filter), of([])))
   );
+
   constructor(private dialog: MatDialog, private supplyService: SupplyService) {}
 
   openDialog(data?: Supply) {
-    const ref = this.dialog.open<AddSupplyDialogComponent, Supply, Supply>(AddSupplyDialogComponent, { data });
+    const ref = this.dialog.open<AddSupplyDialogComponent, Supply, { value: Supply; addOther: boolean }>(
+      AddSupplyDialogComponent,
+      { data }
+    );
 
     ref
       .afterClosed()
       .pipe(take(1))
       .subscribe(res => {
-        const observer = data ? this.supplyService.update(data.id, res) : this.supplyService.add(res);
+        if (res.addOther) {
+          this.openDialog();
+        }
+        const observer = data ? this.supplyService.update(data.id, res.value) : this.supplyService.add(res.value);
         observer.pipe(take(1)).subscribe(() => this.refresh.next(true));
       });
   }

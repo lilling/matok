@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Supply } from '@prisma/client';
+import { Ingredient, Supply } from '@prisma/client';
 
 @Component({
   selector: 'matok-add-supply-dialog',
@@ -11,11 +11,12 @@ import { Supply } from '@prisma/client';
 })
 export class AddSupplyDialogComponent implements OnInit {
   checkoutForm: FormGroup;
+  addOther: boolean;
 
   constructor(
     public translateService: TranslateService,
     private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<any, Supply>,
+    private dialogRef: MatDialogRef<any, { value: Supply; addOther: boolean }>,
     @Inject(MAT_DIALOG_DATA) public data?: Supply
   ) {}
 
@@ -27,7 +28,7 @@ export class AddSupplyDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dialogRef.close(this.checkoutForm.value);
+    this.dialogRef.close({ value: this.checkoutForm.value, addOther: this.addOther });
   }
 
   isDisabled() {

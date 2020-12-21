@@ -11,5 +11,8 @@
     </mat-form-field>
   </div>
 
-  <button class="button" [disabled]="isDisabled()" mat-flat-button color="primary" type="submit">{{ 'Complete' | translate }}</button>
+  <div class="buttons">
+    <button class="button" [disabled]="isDisabled()" mat-flat-button color="primary" type="submit">{{ 'Complete' | translate }}</button>
+    <button class="button" [disabled]="isDisabled()" (click)="addOther = true" mat-flat-button color="primary" type="submit">{{ 'CompleteAndAddOther' | translate }}</button>
+  </div>
 </form>
