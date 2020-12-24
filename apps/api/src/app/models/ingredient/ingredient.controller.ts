@@ -45,7 +45,7 @@ export class IngredientController {
 
   @Delete()
   deleteMany(@Body() ids: string[]) {
-    return this.ingredientService.deleteMany({ id: { in: ids } });
+    return this.ingredientService.deleteMany(ids);
   }
 
   @Put(':id')

@@ -3,7 +3,7 @@ import { BehaviorSubject, combineLatest, iif, of } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { debounceTime, map, startWith, switchMap, take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { Recipe } from '@prisma/client';
+import { IngredientAmount, Recipe, SupplyAmount } from '@prisma/client';
 import { AddRecipeDialogComponent } from './add-recipe-dialog/add-recipe-dialog.component';
 import { RecipeService } from '../../shared/recipe.service';
 
@@ -28,7 +28,11 @@ export class RecipesListComponent {
   constructor(private dialog: MatDialog, private recipeService: RecipeService) {}
 
   openDialog(data?: Recipe) {
-    const ref = this.dialog.open<AddRecipeDialogComponent, Recipe, Recipe>(AddRecipeDialogComponent, { data });
+    const ref = this.dialog.open<
+      AddRecipeDialogComponent,
+      Recipe,
+      { item: Recipe; ingredientsAmount: IngredientAmount[]; supplyAmounts: SupplyAmount[] }
+    >(AddRecipeDialogComponent, { data });
 
     ref
       .afterClosed()

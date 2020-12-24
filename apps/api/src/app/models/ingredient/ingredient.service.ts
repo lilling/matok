@@ -1,15 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import {
-  Ingredient,
-  IngredientWhereUniqueInput,
-  IngredientUpdateInput,
-  IngredientWhereInput,
-  IngredientUpdateManyMutationInput,
-  IngredientOrderByInput,
-  IngredientCreateInput,
-} from '@prisma/client';
-
 @Injectable()
 export class IngredientService {
   constructor(private prisma: PrismaService) {}
@@ -49,11 +39,27 @@ export class IngredientService {
     return this.prisma.ingredient.updateMany({ data, where });
   }
 
-  delete(where: IngredientWhereUniqueInput): Promise<Ingredient> {
+  async delete(where: IngredientWhereUniqueInput): Promise<Ingredient> {
+    await this.prisma.ingredientAmount.deleteMany({
+      where: { ingredientId: { equals: where.id } },
+    });
     return this.prisma.ingredient.delete({ where });
   }
 
-  deleteMany(where: IngredientWhereInput) {
-    return this.prisma.ingredient.deleteMany({ where });
+  async deleteMany(ids: string[]) {
+    await this.prisma.ingredientAmount.deleteMany({
+      where: { ingredientId: { in: ids } },
+    });
+    return this.prisma.ingredient.deleteMany({ where: { id: { in: ids } } });
   }
 }
+
+import {
+  Ingredient,
+  IngredientWhereUniqueInput,
+  IngredientUpdateInput,
+  IngredientWhereInput,
+  IngredientUpdateManyMutationInput,
+  IngredientOrderByInput,
+  IngredientCreateInput,
+} from '@prisma/client';

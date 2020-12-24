@@ -45,7 +45,7 @@ export class SupplyController {
 
   @Delete()
   deleteMany(@Body() ids: string[]) {
-    return this.supplyService.deleteMany({ id: { in: ids } });
+    return this.supplyService.deleteMany(ids);
   }
 
   @Put(':id')

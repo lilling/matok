@@ -49,11 +49,17 @@ export class SupplyService {
     return this.prisma.supply.updateMany({ data, where });
   }
 
-  delete(where: SupplyWhereUniqueInput): Promise<Supply> {
+  async delete(where: SupplyWhereUniqueInput): Promise<Supply> {
+    await this.prisma.supplyAmount.deleteMany({
+      where: { supplyId: { equals: where.id } },
+    });
     return this.prisma.supply.delete({ where });
   }
 
-  deleteMany(where: SupplyWhereInput) {
-    return this.prisma.supply.deleteMany({ where });
+  async deleteMany(ids: string[]) {
+    await this.prisma.supplyAmount.deleteMany({
+      where: { supplyId: { in: ids } },
+    });
+    return this.prisma.supply.deleteMany({ where: { id: { in: ids } } });
   }
 }
