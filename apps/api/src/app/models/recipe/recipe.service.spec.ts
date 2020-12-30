@@ -1,89 +1,94 @@
-import { Injectable } from '@nestjs/common';
+import { RecipeService } from './recipe.service';
 import { PrismaService } from '../prisma.service';
-import {
-  Recipe,
-  RecipeWhereUniqueInput,
-  RecipeUpdateInput,
-  RecipeWhereInput,
-  RecipeUpdateManyMutationInput,
-  RecipeOrderByInput,
-  IngredientAmount,
-  SupplyAmount,
-} from '@prisma/client';
 
-@Injectable()
-export class RecipeService {
-  constructor(private prisma: PrismaService) {}
+describe('RecipeService', () => {
+  const prisma = new PrismaService();
 
-  get(where: RecipeWhereUniqueInput): Promise<Recipe | null> {
-    return this.prisma.recipe.findOne({
-      where,
-      include: {
-        IngredientAmount: { include: { Ingredient: true } },
-        SupplyAmount: { include: { Supply: true } },
-      },
-    });
-  }
+  const service: RecipeService = new RecipeService(prisma);
 
-  getMany(params: {
-    skip?: number;
-    take?: number;
-    cursor?: RecipeWhereUniqueInput;
-    where?: RecipeWhereInput;
-    orderBy?: RecipeOrderByInput;
-  }): Promise<Recipe[]> {
-    return this.prisma.recipe.findMany({
-      ...params,
-      include: {
-        IngredientAmount: { include: { Ingredient: true } },
-        SupplyAmount: { include: { Supply: true } },
-      },
-    });
-  }
-
-  create(item: Recipe, ingredientAmounts: IngredientAmount[], supplyAmounts: SupplyAmount[]): Promise<Recipe> {
-    return this.prisma.recipe.create({
-      data: {
-        id: item.id,
-        name: item.name,
-        SupplyAmount: {
-          create: supplyAmounts.map(s => ({
-            id: s.id,
-            amount: s.amount,
-            Supply: { connect: { id: s.supplyId } },
-          })),
+  describe('creation', () => {
+    it('should create rows also in other tables when creating a new recipe', () => {
+      const spy = spyOn(service['prisma'].recipe, 'create').and.stub();
+      const expected = {
+        data: {
+          IngredientAmount: { create: [{ Ingredient: { connect: { id: '111' } }, amount: 2, id: '213' }] },
+          SupplyAmount: { create: [{ Supply: { connect: { id: '111' } }, amount: 2, id: '213' }] },
+          id: 'sda',
+          name: 'test',
         },
-        IngredientAmount: {
-          create: ingredientAmounts.map(s => ({
-            id: s.id,
-            amount: s.amount,
-            Ingredient: { connect: { id: s.ingredientId } },
-          })),
-        },
-      },
+      };
+      service.create(
+        { id: 'sda', name: 'test' },
+        [{ id: '213', amount: 2, ingredientId: '111', recipeId: 'sda' }],
+        [{ id: '213', amount: 2, supplyId: '111', recipeId: 'sda' }]
+      );
+
+      expect(spy).toHaveBeenCalledWith(expected);
     });
-  }
+  });
 
-  update(where: RecipeWhereUniqueInput, data: RecipeUpdateInput): Promise<Recipe> {
-    return this.prisma.recipe.update({ data, where });
-  }
+  describe('reading', () => {
+    it('should get from other tables also when calling getMany', () => {
+      const spy = spyOn(service['prisma'].recipe, 'findMany').and.stub();
+      const expected = {
+        include: { IngredientAmount: { include: { Ingredient: true } }, SupplyAmount: { include: { Supply: true } } },
+      };
+      service.getMany({});
+      expect(spy).toBeCalledWith(expected);
+    });
+    it('should get from other tables also when calling get', () => {
+      const spy = spyOn(service['prisma'].recipe, 'findOne').and.stub();
+      const expected = {
+        include: { IngredientAmount: { include: { Ingredient: true } }, SupplyAmount: { include: { Supply: true } } },
+        where: { id: '1' },
+      };
+      service.get({ id: '1' });
+      expect(spy).toBeCalledWith(expected);
+    });
+  });
 
-  updateMany(where: RecipeWhereUniqueInput, data: RecipeUpdateManyMutationInput) {
-    return this.prisma.recipe.updateMany({ data, where });
-  }
+  describe('updating', () => {
+    it('should not change any parameter when calling updateMany', () => {
+      const spy = spyOn(service['prisma'].recipe, 'updateMany').and.stub();
+      const expected = { where: { id: '1' }, data: { name: 'bla' } };
+      service.updateMany(expected.where, expected.data);
+      expect(spy).toBeCalledWith(expected);
+    });
+    it('should not change any parameter when calling update', () => {
+      const spy = spyOn(service['prisma'].recipe, 'update').and.stub();
+      const expected = { where: { id: '1' }, data: { name: 'bla' } };
+      service.update(expected.where, expected.data);
+      expect(spy).toBeCalledWith(expected);
+    });
+  });
 
-  async delete(id: string): Promise<Recipe> {
-    await this.deleteFromOtherTables({ recipeId: { equals: id } });
-    return this.prisma.recipe.delete({ where: { id } });
-  }
+  describe('deletion', () => {
+    it('should call deletion from other tables and recipe table when calling deleteMany', async () => {
+      const expected = { where: { recipeId: { in: ['1'] } } };
 
-  async deleteMany(ids: string[]) {
-    await this.deleteFromOtherTables({ recipeId: { in: ids } });
-    return this.prisma.recipe.deleteMany({ where: { id: { in: ids } } });
-  }
+      const calls = [
+        { spy: spyOn(service['prisma'].ingredientAmount, 'deleteMany').and.stub(), expected },
+        { spy: spyOn(service['prisma'].supplyAmount, 'deleteMany').and.stub(), expected },
+      ];
+      const spy = spyOn(service['prisma'].recipe, 'deleteMany').and.stub();
+      const recipeDeleteManyExpected = { where: { id: { in: ['1'] } } };
+      await service.deleteMany(['1']);
+      expect(spy).toBeCalledWith(recipeDeleteManyExpected);
+      calls.every(call => expect(call.spy).toBeCalledWith(call.expected));
+    });
 
-  private async deleteFromOtherTables(where) {
-    await this.prisma.ingredientAmount.deleteMany({ where });
-    await this.prisma.supplyAmount.deleteMany({ where });
-  }
-}
+    it('should call deletion from other tables and recipe table when calling delete', async () => {
+      const expected = { where: { recipeId: { equals: '1' } } };
+
+      const calls = [
+        { spy: spyOn(service['prisma'].ingredientAmount, 'deleteMany').and.stub(), expected },
+        { spy: spyOn(service['prisma'].supplyAmount, 'deleteMany').and.stub(), expected },
+      ];
+      const spy = spyOn(service['prisma'].recipe, 'delete').and.stub();
+      const recipeDeleteExpected = { where: { id: '1' } };
+      await service.delete('1');
+      expect(spy).toBeCalledWith(recipeDeleteExpected);
+      calls.every(call => expect(call.spy).toBeCalledWith(call.expected));
+    });
+  });
+});

@@ -30,7 +30,7 @@ export class SupplyController {
 
   @Get(':id')
   get(@Param('id') id: string) {
-    return this.supplyService.get({ id });
+    return this.supplyService.get(id);
   }
 
   @Post('add')
@@ -40,7 +40,7 @@ export class SupplyController {
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.supplyService.delete({ id });
+    return this.supplyService.delete(id);
   }
 
   @Delete()

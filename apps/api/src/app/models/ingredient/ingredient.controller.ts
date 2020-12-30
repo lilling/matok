@@ -30,7 +30,7 @@ export class IngredientController {
 
   @Get(':id')
   getIngredient(@Param('id') id: string) {
-    return this.ingredientService.get({ id });
+    return this.ingredientService.get(id);
   }
 
   @Post('add')
@@ -40,7 +40,7 @@ export class IngredientController {
 
   @Delete(':id')
   deleteIngredient(@Param('id') id: string) {
-    return this.ingredientService.delete({ id });
+    return this.ingredientService.delete(id);
   }
 
   @Delete()

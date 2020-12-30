@@ -14,10 +14,8 @@ import {
 export class SupplyService {
   constructor(private prisma: PrismaService) {}
 
-  get(userWhereUniqueInput: SupplyWhereUniqueInput): Promise<Supply | null> {
-    return this.prisma.supply.findOne({
-      where: userWhereUniqueInput,
-    });
+  get(id: string): Promise<Supply | null> {
+    return this.prisma.supply.findOne({ where: { id } });
   }
 
   getMany(params: {
@@ -49,17 +47,13 @@ export class SupplyService {
     return this.prisma.supply.updateMany({ data, where });
   }
 
-  async delete(where: SupplyWhereUniqueInput): Promise<Supply> {
-    await this.prisma.supplyAmount.deleteMany({
-      where: { supplyId: { equals: where.id } },
-    });
-    return this.prisma.supply.delete({ where });
+  async delete(id: string): Promise<Supply> {
+    await this.prisma.supplyAmount.deleteMany({ where: { supplyId: { equals: id } } });
+    return this.prisma.supply.delete({ where: { id } });
   }
 
   async deleteMany(ids: string[]) {
-    await this.prisma.supplyAmount.deleteMany({
-      where: { supplyId: { in: ids } },
-    });
+    await this.prisma.supplyAmount.deleteMany({ where: { supplyId: { in: ids } } });
     return this.prisma.supply.deleteMany({ where: { id: { in: ids } } });
   }
 }

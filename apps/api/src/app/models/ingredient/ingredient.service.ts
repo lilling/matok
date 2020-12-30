@@ -1,13 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
+import {
+  Ingredient,
+  IngredientWhereUniqueInput,
+  IngredientUpdateInput,
+  IngredientWhereInput,
+  IngredientUpdateManyMutationInput,
+  IngredientOrderByInput,
+  IngredientCreateInput,
+} from '@prisma/client';
+
 @Injectable()
 export class IngredientService {
   constructor(private prisma: PrismaService) {}
 
-  get(userWhereUniqueInput: IngredientWhereUniqueInput): Promise<Ingredient | null> {
-    return this.prisma.ingredient.findOne({
-      where: userWhereUniqueInput,
-    });
+  get(id: string): Promise<Ingredient | null> {
+    return this.prisma.ingredient.findOne({ where: { id } });
   }
 
   getMany(params: {
@@ -17,14 +25,7 @@ export class IngredientService {
     where?: IngredientWhereInput;
     orderBy?: IngredientOrderByInput;
   }): Promise<Ingredient[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.ingredient.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+    return this.prisma.ingredient.findMany({ ...params });
   }
 
   create(data: IngredientCreateInput): Promise<Ingredient> {
@@ -39,27 +40,13 @@ export class IngredientService {
     return this.prisma.ingredient.updateMany({ data, where });
   }
 
-  async delete(where: IngredientWhereUniqueInput): Promise<Ingredient> {
-    await this.prisma.ingredientAmount.deleteMany({
-      where: { ingredientId: { equals: where.id } },
-    });
-    return this.prisma.ingredient.delete({ where });
+  async delete(id: string): Promise<Ingredient> {
+    await this.prisma.ingredientAmount.deleteMany({ where: { ingredientId: { equals: id } } });
+    return this.prisma.ingredient.delete({ where: { id } });
   }
 
   async deleteMany(ids: string[]) {
-    await this.prisma.ingredientAmount.deleteMany({
-      where: { ingredientId: { in: ids } },
-    });
+    await this.prisma.ingredientAmount.deleteMany({ where: { ingredientId: { in: ids } } });
     return this.prisma.ingredient.deleteMany({ where: { id: { in: ids } } });
   }
 }
-
-import {
-  Ingredient,
-  IngredientWhereUniqueInput,
-  IngredientUpdateInput,
-  IngredientWhereInput,
-  IngredientUpdateManyMutationInput,
-  IngredientOrderByInput,
-  IngredientCreateInput,
-} from '@prisma/client';
