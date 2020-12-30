@@ -25,14 +25,7 @@ export class SupplyService {
     where?: SupplyWhereInput;
     orderBy?: SupplyOrderByInput;
   }): Promise<Supply[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.supply.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+    return this.prisma.supply.findMany({ ...params });
   }
 
   create(data: SupplyCreateInput): Promise<Supply> {
