@@ -15,7 +15,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { RecipesIngredientsModule } from './recipes-ingredients/recipes-ingredients.module';
 import { MatSelectModule } from '@angular/material/select';
-import { CoreModule } from './core.module';
+import { CoreModule } from './core/core.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
