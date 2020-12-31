@@ -7,6 +7,13 @@ import { EffectsModule } from '@ngrx/effects';
 import { RouterModule } from '@angular/router';
 import { ROUTES } from '../app.routes';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import * as fromIngredient from './store/ingredient/ingredient.reducer';
+import * as fromRecipe from './store/recipe/recipe.reducer';
+import * as fromSupply from './store/supply/supply.reducer';
+import { IngredientEffects } from './store/ingredient/ingredient.effects';
+import { IngredientService } from './services/ingredient.service';
+import { SupplyService } from './services/supply.service';
+import { RecipeService } from './services/recipe.service';
 
 @NgModule({
   imports: [
@@ -38,7 +45,12 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
     ),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreRouterConnectingModule.forRoot(),
+    StoreModule.forFeature(fromIngredient.ingredientsFeatureKey, fromIngredient.reducer),
+    StoreModule.forFeature(fromRecipe.recipesFeatureKey, fromRecipe.reducer),
+    StoreModule.forFeature(fromSupply.suppliesFeatureKey, fromSupply.reducer),
+    EffectsModule.forFeature([IngredientEffects]),
   ],
+  providers: [IngredientService, SupplyService, RecipeService],
   exports: [RouterModule],
 })
 export class CoreModule {}

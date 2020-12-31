@@ -9,14 +9,14 @@ export abstract class BaseService<T> {
   }
 
   add(item: T) {
-    return this.http.post(`${this.urlPart}/add`, { ...item, id: uuid.v4() });
+    return this.http.post<T>(`${this.urlPart}/add`, { ...item, id: uuid.v4() });
   }
 
   delete(id: string) {
-    return this.http.delete(`${this.urlPart}/${id}`);
+    return this.http.delete<T>(`${this.urlPart}/${id}`);
   }
 
   update(id: string, item: T) {
-    return this.http.put(`${this.urlPart}/${id}`, item);
+    return this.http.put<T>(`${this.urlPart}/${id}`, item);
   }
 }

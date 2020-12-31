@@ -5,7 +5,7 @@ import { debounceTime, map, startWith, switchMap, take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { IngredientAmount, Recipe, SupplyAmount } from '@prisma/client';
 import { AddRecipeDialogComponent } from './add-recipe-dialog/add-recipe-dialog.component';
-import { RecipeService } from '../../shared/recipe.service';
+import { RecipeService } from '../../core/services/recipe.service';
 
 @Component({
   selector: 'matok-recipes-list',

@@ -5,7 +5,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { IngredientService } from '../../shared/ingredient.service';
+import { IngredientService } from '../../core/services/ingredient.service';
 import { of } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import Spy = jasmine.Spy;

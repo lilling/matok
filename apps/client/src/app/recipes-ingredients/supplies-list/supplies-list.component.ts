@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { BehaviorSubject, combineLatest, iif, of } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { debounceTime, map, startWith, switchMap, take } from 'rxjs/operators';
-import { SupplyService } from '../../shared/supply.service';
-import { Ingredient, Supply } from '@prisma/client';
+import { SupplyService } from '../../core/services/supply.service';
+import { Supply } from '@prisma/client';
 import { MatDialog } from '@angular/material/dialog';
 import { AddSupplyDialogComponent } from './add-supply-dialog/add-supply-dialog.component';
 
