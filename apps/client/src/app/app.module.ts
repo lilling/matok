@@ -13,10 +13,9 @@ import { MatListModule } from '@angular/material/list';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { ROUTES } from './app.routes';
-import { RouterModule } from '@angular/router';
 import { RecipesIngredientsModule } from './recipes-ingredients/recipes-ingredients.module';
 import { MatSelectModule } from '@angular/material/select';
+import { CoreModule } from './core.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -26,6 +25,7 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [AppComponent],
   imports: [
     HttpClientModule,
+    CoreModule,
     BrowserModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -36,7 +36,6 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
-    RecipesIngredientsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -45,7 +44,6 @@ export function createTranslateLoader(http: HttpClient) {
       },
       defaultLanguage: 'he',
     }),
-    RouterModule.forRoot(ROUTES, { useHash: true }),
     MatSelectModule,
   ],
   providers: [],
