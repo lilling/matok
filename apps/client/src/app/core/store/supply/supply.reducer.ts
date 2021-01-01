@@ -1,4 +1,4 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Supply } from '@prisma/client';
 
@@ -20,14 +20,14 @@ export const reducer = createReducer(
   initialState,
   on(SupplyActions.addSupply, (state, action) => adapter.addOne(action.supply, state)),
   on(SupplyActions.upsertSupply, (state, action) => adapter.upsertOne(action.supply, state)),
-  on(SupplyActions.addSupplys, (state, action) => adapter.addMany(action.supplys, state)),
-  on(SupplyActions.upsertSupplys, (state, action) => adapter.upsertMany(action.supplys, state)),
+  on(SupplyActions.addSupplies, (state, action) => adapter.addMany(action.supplies, state)),
+  on(SupplyActions.upsertSupplies, (state, action) => adapter.upsertMany(action.supplies, state)),
   on(SupplyActions.updateSupply, (state, action) => adapter.updateOne(action.supply, state)),
-  on(SupplyActions.updateSupplys, (state, action) => adapter.updateMany(action.supplys, state)),
+  on(SupplyActions.updateSupplies, (state, action) => adapter.updateMany(action.supplies, state)),
   on(SupplyActions.deleteSupply, (state, action) => adapter.removeOne(action.id, state)),
-  on(SupplyActions.deleteSupplys, (state, action) => adapter.removeMany(action.ids, state)),
-  on(SupplyActions.loadSupplys, (state, action) => adapter.setAll(action.supplys, state)),
-  on(SupplyActions.clearSupplys, state => adapter.removeAll(state))
+  on(SupplyActions.deleteSupplies, (state, action) => adapter.removeMany(action.ids, state)),
+  on(SupplyActions.loadSupplies, (state, action) => adapter.setAll(action.supplies, state)),
+  on(SupplyActions.clearSupplies, state => adapter.removeAll(state))
 );
-
-export const { selectIds, selectEntities, selectAll, selectTotal } = adapter.getSelectors();
+export const selectSupplyState = createFeatureSelector<State>(suppliesFeatureKey);
+export const { selectIds, selectEntities, selectAll, selectTotal } = adapter.getSelectors(selectSupplyState);

@@ -32,7 +32,7 @@ export class IngredientEffects {
     )
   );
 
-  updateIngredients$ = createEffect(() =>
+  updateIngredient$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IngredientsActionTypes.updateIngredientStarted),
       switchMap((action: { ingredient: Ingredient; id: string } & TypedAction<string>) =>
