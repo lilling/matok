@@ -17,9 +17,7 @@ export class IngredientEffects {
   loadIngredients$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IngredientsActionTypes.loadIngredientsStarted),
-      switchMap((action: { filter: string } & TypedAction<string>) =>
-        this.service.get(action.filter).pipe(map(ingredients => loadIngredients({ ingredients })))
-      )
+      switchMap(() => this.service.get().pipe(map(ingredients => loadIngredients({ ingredients }))))
     )
   );
 

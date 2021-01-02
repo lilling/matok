@@ -15,6 +15,7 @@ import { IngredientService } from './services/ingredient.service';
 import { SupplyService } from './services/supply.service';
 import { RecipeService } from './services/recipe.service';
 import { SupplyEffects } from './store/supply/supply.effects';
+import { RecipeEffects } from './store/recipe/recipe.effects';
 
 @NgModule({
   imports: [
@@ -49,7 +50,7 @@ import { SupplyEffects } from './store/supply/supply.effects';
     StoreModule.forFeature(fromIngredient.ingredientsFeatureKey, fromIngredient.reducer),
     StoreModule.forFeature(fromRecipe.recipesFeatureKey, fromRecipe.reducer),
     StoreModule.forFeature(fromSupply.suppliesFeatureKey, fromSupply.reducer),
-    EffectsModule.forFeature([IngredientEffects, SupplyEffects]),
+    EffectsModule.forFeature([IngredientEffects, SupplyEffects, RecipeEffects]),
   ],
   providers: [IngredientService, SupplyService, RecipeService],
   exports: [RouterModule],

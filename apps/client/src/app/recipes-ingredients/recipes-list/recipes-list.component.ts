@@ -1,52 +1,62 @@
-import { Component } from '@angular/core';
-import { BehaviorSubject, combineLatest, iif, of } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { debounceTime, map, startWith, switchMap, take } from 'rxjs/operators';
+import { debounceTime, startWith, take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { IngredientAmount, Recipe, SupplyAmount } from '@prisma/client';
 import { AddRecipeDialogComponent } from './add-recipe-dialog/add-recipe-dialog.component';
-import { RecipeService } from '../../core/services/recipe.service';
+import { RecipesListStore } from './recipes-list.store';
+import * as actions from '../../core/store/recipe/recipe.actions';
+import { Store } from '@ngrx/store';
+import * as fromRecipe from '../../core/store/recipe/recipe.reducer';
+import { RecipeClient } from '../../core/models/recipe.model';
 
 @Component({
   selector: 'matok-recipes-list',
   templateUrl: './recipes-list.component.html',
   styleUrls: ['./recipes-list.component.scss'],
+  providers: [RecipesListStore],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecipesListComponent {
+export class RecipesListComponent implements OnDestroy {
   displayedColumns: string[] = ['name', 'actions'];
-  refresh = new BehaviorSubject<boolean>(true);
   filterCtrl = new FormControl();
-  filter$ = this.filterCtrl.valueChanges.pipe(
-    debounceTime(500),
-    startWith(''),
-    map(a => '' + a)
-  );
-  refreshAsObservable = this.refresh.asObservable();
-  dataSource$ = combineLatest([this.refreshAsObservable, this.filter$]).pipe(
-    switchMap(([refreshNeeded, filter]) => iif(() => refreshNeeded, this.recipeService.get(filter), of([])))
-  );
-  constructor(private dialog: MatDialog, private recipeService: RecipeService) {}
+  data$ = this.cStore.filteredRecipes$;
+  sub: Subscription;
+
+  constructor(private dialog: MatDialog, private cStore: RecipesListStore, private store: Store<fromRecipe.State>) {
+    this.sub = this.filterCtrl.valueChanges
+      .pipe(debounceTime(500), startWith(''))
+      .subscribe((filter: string) => this.cStore.changeFilter(filter));
+  }
 
   openDialog(data?: Recipe) {
-    const ref = this.dialog.open<
+    const ref = this.dialog.open<AddRecipeDialogComponent, Recipe, { value: RecipeClient; addOther: boolean }>(
       AddRecipeDialogComponent,
-      Recipe,
-      { item: Recipe; ingredientsAmount: IngredientAmount[]; supplyAmounts: SupplyAmount[] }
-    >(AddRecipeDialogComponent, { data });
+      { data }
+    );
 
     ref
       .afterClosed()
       .pipe(take(1))
       .subscribe(res => {
-        const observer = data ? this.recipeService.update(data.id, res) : this.recipeService.add(res);
-        observer.pipe(take(1)).subscribe(() => this.refresh.next(true));
+        if (res.addOther) {
+          this.openDialog();
+        }
+
+        this.store.dispatch(
+          data
+            ? actions.updateRecipeStarted({ id: data.id, recipe: res.value })
+            : actions.addRecipeStarted({ recipe: res.value })
+        );
       });
   }
 
   delete(id: string) {
-    this.recipeService
-      .delete(id)
-      .pipe(take(1))
-      .subscribe(() => this.refresh.next(true));
+    this.store.dispatch(actions.deleteRecipeStarted({ id }));
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

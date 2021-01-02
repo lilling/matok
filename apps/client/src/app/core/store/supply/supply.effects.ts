@@ -11,9 +11,7 @@ export class SupplyEffects {
   loadSupplies$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SuppliesActionTypes.loadSuppliesStarted),
-      switchMap((action: { filter: string } & TypedAction<string>) =>
-        this.service.get(action.filter).pipe(map(supplies => loadSupplies({ supplies })))
-      )
+      switchMap(() => this.service.get().pipe(map(supplies => loadSupplies({ supplies }))))
     )
   );
 

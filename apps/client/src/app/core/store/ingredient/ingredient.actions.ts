@@ -19,10 +19,7 @@ export const IngredientsActionTypes = {
   clearIngredients: '[Ingredient/API] Clear Ingredients',
 };
 
-export const loadIngredientsStarted = createAction(
-  IngredientsActionTypes.loadIngredientsStarted,
-  props<{ filter: string }>()
-);
+export const loadIngredientsStarted = createAction(IngredientsActionTypes.loadIngredientsStarted);
 
 export const loadIngredients = createAction(
   IngredientsActionTypes.loadIngredients,

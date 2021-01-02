@@ -1,15 +1,15 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { Recipe } from '@prisma/client';
 import * as RecipeActions from './recipe.actions';
+import { RecipeClient } from '../../models/recipe.model';
 
 export const recipesFeatureKey = 'recipes';
 
-export interface State extends EntityState<Recipe> {
+export interface State extends EntityState<RecipeClient> {
   // additional entities state properties
 }
 
-export const adapter: EntityAdapter<Recipe> = createEntityAdapter<Recipe>();
+export const adapter: EntityAdapter<RecipeClient> = createEntityAdapter<RecipeClient>();
 
 export const initialState: State = adapter.getInitialState({
   // additional entity state properties
@@ -29,4 +29,5 @@ export const reducer = createReducer(
   on(RecipeActions.clearRecipes, state => adapter.removeAll(state))
 );
 
-export const { selectIds, selectEntities, selectAll, selectTotal } = adapter.getSelectors();
+export const selectRecipesState = createFeatureSelector<State>(recipesFeatureKey);
+export const { selectIds, selectEntities, selectAll, selectTotal } = adapter.getSelectors(selectRecipesState);

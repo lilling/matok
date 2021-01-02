@@ -20,7 +20,7 @@ export const SuppliesActionTypes = {
   clearSupplies: '[Supply/API] Clear Supplies',
 };
 
-export const loadSuppliesStarted = createAction(SuppliesActionTypes.loadSuppliesStarted, props<{ filter: string }>());
+export const loadSuppliesStarted = createAction(SuppliesActionTypes.loadSuppliesStarted);
 
 export const loadSupplies = createAction(SuppliesActionTypes.loadSupplies, props<{ supplies: Supply[] }>());
 

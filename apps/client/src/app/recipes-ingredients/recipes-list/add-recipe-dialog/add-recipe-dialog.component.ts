@@ -2,7 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IngredientAmount, Recipe, SupplyAmount } from '@prisma/client';
+import { Ingredient, IngredientAmount, Recipe, SupplyAmount } from '@prisma/client';
+import { RecipeClient } from '../../../core/models/recipe.model';
 
 @Component({
   selector: 'matok-add-recipe-dialog',
@@ -15,10 +16,7 @@ export class AddRecipeDialogComponent implements OnInit {
   constructor(
     public translateService: TranslateService,
     private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<
-      any,
-      { item: Recipe; ingredientsAmount: IngredientAmount[]; supplyAmounts: SupplyAmount[] }
-    >,
+    private dialogRef: MatDialogRef<any, { value: RecipeClient; addOther: boolean }>,
     @Inject(MAT_DIALOG_DATA) public data?: Recipe
   ) {}
 

@@ -8,23 +8,25 @@ import { AddSupplyDialogComponent } from './add-supply-dialog/add-supply-dialog.
 import * as actions from '../../core/store/supply/supply.actions';
 import { select, Store } from '@ngrx/store';
 import * as fromSupply from '../../core/store/supply/supply.reducer';
+import { SuppliesListStore } from './supplies-list.store';
 
 @Component({
   selector: 'matok-supplies-list',
   templateUrl: './supplies-list.component.html',
   styleUrls: ['./supplies-list.component.scss'],
+  providers: [SuppliesListStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuppliesListComponent implements OnDestroy {
   displayedColumns: string[] = ['name', 'price', 'actions'];
   filterCtrl = new FormControl();
-  data$ = this.store.pipe(select(fromSupply.selectAll));
+  data$ = this.cStore.filteredSupplies$;
   sub: Subscription;
 
-  constructor(private dialog: MatDialog, private store: Store<fromSupply.State>) {
+  constructor(private dialog: MatDialog, private cStore: SuppliesListStore, private store: Store<fromSupply.State>) {
     this.sub = this.filterCtrl.valueChanges
       .pipe(debounceTime(500), startWith(''))
-      .subscribe((filter: string) => this.store.dispatch(actions.loadSuppliesStarted({ filter })));
+      .subscribe((filter: string) => this.cStore.changeFilter(filter));
   }
 
   openDialog(data?: Supply) {
